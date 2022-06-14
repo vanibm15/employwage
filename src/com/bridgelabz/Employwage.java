@@ -3,40 +3,57 @@ package com.bridgelabz;
 public class Employwage {
     public static final int IS_PART_TIME = 1;
     public static final int IS_FULL_TIME = 2;
+    public static final int FULL_DAY_HR = 8;
+    public static final int PART_DAY_HR = 4;
+    // Declaring Variable
+    private static String companyName;
+    private static int empWagePerHr;
+    private static int numMaxWorkingDay;
+    private static int maxHrsInMonth;
+    private static int totalEmpWage;
 
-    public static int computeEmpWage(String company, int empRatePerHour, int numOfWorkingDaysPerMonth,
-                                     int maxWorkingHoursPerMonth) {
-        System.out.println("Welcome to Employee Wage Program for Multiple Companies.");
-        int empHrs = 0;
-        int monthlyEmpWage = 0;
-        int totalWorkingDays = 0;
-        int totalWorkingHrs = 0;
-        while (totalWorkingHrs <= maxWorkingHoursPerMonth && totalWorkingDays < numOfWorkingDaysPerMonth) {
-            totalWorkingDays++;
-            int empCheck = (int) (Math.random() * 10) % 3;
-            switch (empCheck) {
-                case IS_FULL_TIME:
-                    empHrs = 8;
-                    break;
-                case IS_PART_TIME:
-                    empHrs = 4;
-                    break;
-                default:
-                    empHrs = 0;
-            }
-            totalWorkingHrs += empHrs;
-            System.out.println("#DAY : " + totalWorkingDays + " , #Total Working Hours : " + totalWorkingHrs);
-        }
-        monthlyEmpWage = totalWorkingHrs * empRatePerHour;
-        System.out.println("Employee Wage for a Month: " + monthlyEmpWage);
-        return monthlyEmpWage;
+    // Constructor
+    public Employwage(String companyName, int empWagePerHr, int numMaxWorkingDay, int maxHrsInMonth) {
+        this.companyName = companyName;
+        this.empWagePerHr = empWagePerHr;
+        this.numMaxWorkingDay = numMaxWorkingDay;
+        this.maxHrsInMonth = maxHrsInMonth;
+    }
+
+    @Override
+    public String toString() {
+        return "Total EmpWAge for " + companyName + "  " + totalEmpWage;
     }
 
     public static void main(String[] args) {
-        System.out.println(" Infoysis");
-        computeEmpWage("MindTree", 20, 10, 30);
-        System.out.println();
-        System.out.println("Dell ");
-        computeEmpWage("Dell", 10, 20, 40);
+        Employwage dellEmpWage = new Employwage("Dell", 20, 20, 100);
+        dellEmpWage.computeEmpWage();
+        System.out.println(dellEmpWage);
+        Employwage infoysisEmpWage = new Employwage("Infoysis", 16, 20, 100);
+        infoysisEmpWage.computeEmpWage();
+        System.out.println(infoysisEmpWage);
+    }
+
+    private void computeEmpWage() {
+        int totalEmpHours = 0, totalWorkingDays = 0, workingHours = 0;
+        while (totalEmpHours < maxHrsInMonth && totalWorkingDays < numMaxWorkingDay) {
+            totalWorkingDays++;
+            double empCheck = Math.floor(Math.random() * 10) % 3;
+            // Calculating Wage On Employee Type
+            switch ((int) empCheck) {
+                case 0:
+                    workingHours = FULL_DAY_HR;
+                    break;
+                case 1:
+                    workingHours = PART_DAY_HR;
+                    break;
+                default:
+                    workingHours = 0;
+            }
+            totalEmpHours += workingHours;
+            System.out.println("Day: " + totalWorkingDays + " workingHours: " + workingHours);
+        }
+        //Calculate Employ wage
+        totalEmpWage = totalEmpHours * empWagePerHr;
     }
 }
